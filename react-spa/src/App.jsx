@@ -1,4 +1,5 @@
-﻿import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { Link, NavLink, Navigate, Route, Routes } from 'react-router-dom'
 import './App.css'
 
 const BOT_DELAY_MS = 450
@@ -37,7 +38,22 @@ function formatTime(iso) {
   })
 }
 
-function App() {
+function HomePage() {
+  return (
+    <main className="home-shell">
+      <section className="home-card">
+        <p className="home-kicker">React SPA</p>
+        <h1>Main Page</h1>
+        <p>Start from the chat page and evolve this into your service workflow.</p>
+        <Link className="cta-link" to="/chat">
+          Open Chat
+        </Link>
+      </section>
+    </main>
+  )
+}
+
+function ChatPage() {
   const [messages, setMessages] = useState(() => [
     createMessage('bot', 'Welcome. Start by sending your first message.'),
   ])
@@ -79,7 +95,7 @@ function App() {
   return (
     <main className="chat-shell">
       <header className="chat-header">
-        <h1>Chat Starter</h1>
+        <h1>Chat Page</h1>
         <p>Basic local chat UI ready for API integration.</p>
       </header>
 
@@ -121,6 +137,27 @@ function App() {
         </button>
       </form>
     </main>
+  )
+}
+
+function App() {
+  return (
+    <>
+      <header className="top-nav">
+        <NavLink to="/" end className={({ isActive }) => (isActive ? 'top-link active' : 'top-link')}>
+          Main
+        </NavLink>
+        <NavLink to="/chat" className={({ isActive }) => (isActive ? 'top-link active' : 'top-link')}>
+          Chat
+        </NavLink>
+      </header>
+
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/chat" element={<ChatPage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </>
   )
 }
 
